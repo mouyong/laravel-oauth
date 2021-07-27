@@ -3,7 +3,7 @@
 namespace ZhenMu\LaravelOauth\Entities;
 
 use ZhenMu\LaravelOauth\Contracts\OauthContract;
-use ZhenMu\LaravelOauth\Models\Oauth;
+use ZhenMu\LaravelOauth\Models\OAuth;
 
 abstract class AbstractOauth implements OauthContract
 {
@@ -44,7 +44,7 @@ abstract class AbstractOauth implements OauthContract
 
     public function getGender(): string
     {
-        return Oauth::translateGender($this->data['gender']);
+        return OAuth::translateGender($this->data['gender']);
     }
 
     public function getAvatar(): string
