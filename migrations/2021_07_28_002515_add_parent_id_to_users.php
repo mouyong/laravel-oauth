@@ -39,6 +39,7 @@ class AddParentIdToUsers extends Migration
             $table->dropColumn(['avatar']);
             $table->dropColumn(['id_card']);
             $table->dropColumn(['ip']);
+
             $table->string('password')->change();
         });
     }
