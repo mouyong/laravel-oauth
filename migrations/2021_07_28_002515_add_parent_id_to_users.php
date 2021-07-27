@@ -20,6 +20,8 @@ class AddParentIdToUsers extends Migration
             $table->string('avatar')->nullable()->after('mobile')->comment('用户头像');
             $table->string('id_card')->nullable()->after('avatar')->comment('用户身份证号');
             $table->string('ip')->nullable()->after('remember_token')->comment('用户访问 ip');
+
+            $table->string('password')->nullable()->change();
         });
     }
 
@@ -37,6 +39,7 @@ class AddParentIdToUsers extends Migration
             $table->dropColumn(['avatar']);
             $table->dropColumn(['id_card']);
             $table->dropColumn(['ip']);
+            $table->string('password')->change();
         });
     }
 }
