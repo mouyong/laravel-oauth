@@ -9,6 +9,7 @@
         }
     ],
     "require": {
+        "doctrine/dbal": "^3.1",
         "overtrue/laravel-wechat": "^6.0"
     },
     "autoload": {

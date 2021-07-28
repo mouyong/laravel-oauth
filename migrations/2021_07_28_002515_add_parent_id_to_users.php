@@ -15,12 +15,7 @@ class AddParentIdToUsers extends Migration
     {
         Schema::table('users', function (Blueprint $table) {
             $table->unsignedBigInteger('parent_id')->default(0)->after('id')->comment('用户 id，users.id');
-            $table->string('realname')->nullable()->after('name')->comment('用户真实姓名');
-            $table->string('mobile')->nullable()->after('realname')->comment('用户手机号');
-            $table->string('avatar')->nullable()->after('mobile')->comment('用户头像');
-            $table->string('id_card')->nullable()->after('avatar')->comment('用户身份证号');
-            $table->string('ip')->nullable()->after('remember_token')->comment('用户访问 ip');
-
+            $table->string('avatar')->nullable()->after('name')->comment('用户头像');
             $table->string('password')->nullable()->change();
         });
     }
@@ -34,13 +29,8 @@ class AddParentIdToUsers extends Migration
     {
         Schema::table('users', function (Blueprint $table) {
             $table->dropColumn(['parent_id']);
-            $table->dropColumn(['realname']);
-            $table->dropColumn(['mobile']);
             $table->dropColumn(['avatar']);
-            $table->dropColumn(['id_card']);
-            $table->dropColumn(['ip']);
-
-            $table->string('password')->change();
+            $table->string('password')->nullable(false)->change();
         });
     }
 }
