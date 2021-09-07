@@ -9,7 +9,7 @@ use Illuminate\Broadcasting\PrivateChannel;
 use Illuminate\Contracts\Broadcasting\ShouldBroadcast;
 use Illuminate\Foundation\Events\Dispatchable;
 use Illuminate\Queue\SerializesModels;
-use ZhenMu\LaravelOauth\Models\OAuth;
+use ZhenMu\LaravelOauth\Models\Oauth;
 
 class OAuthUserRegisterEvent
 {
@@ -21,7 +21,7 @@ class OAuthUserRegisterEvent
     public $data;
 
     /**
-     * @var OAuth
+     * @var Oauth
      */
     public $oauth;
 
@@ -29,9 +29,9 @@ class OAuthUserRegisterEvent
      * Create a new event instance.
      *
      * @param array $data
-     * @param OAuth|null $oauth
+     * @param Oauth|null $oauth
      */
-    public function __construct(array $data, ?OAuth $oauth = null)
+    public function __construct(array $data, ?Oauth $oauth = null)
     {
         $this->data = $data;
         $this->oauth = $oauth;

@@ -3,13 +3,13 @@
 namespace ZhenMu\LaravelOauth\Http\Resources;
 
 use ZhenMu\LaravelInitTemplate\Http\Resources\BaseResource;
-use ZhenMu\LaravelOauth\Models\OAuth;
+use ZhenMu\LaravelOauth\Models\Oauth;
 
 class OauthProfileResource extends BaseResource
 {
     public function toArray($request)
     {
-        /** @var OAuth $oauthModel */
+        /** @var Oauth $oauthModel */
         $oauthModel = $this->resource;
 
         return [

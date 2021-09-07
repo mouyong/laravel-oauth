@@ -10,7 +10,7 @@ use ZhenMu\LaravelOauth\Entities\WechatOauth;
 use ZhenMu\LaravelOauth\Events\OAuthUserRegisterEvent;
 use ZhenMu\LaravelOauth\Http\Resources\OauthProfileResource;
 use ZhenMu\LaravelOauth\Http\Resources\OAuthResource;
-use ZhenMu\LaravelOauth\Models\OAuth;
+use ZhenMu\LaravelOauth\Models\Oauth;
 use ZhenMu\LaravelOauth\Repositories\OauthRepository;
 
 class OAuthController extends BaseController
@@ -36,10 +36,10 @@ class OAuthController extends BaseController
             'required_url' => ['nullable', 'string'],
         ]);
 
-        $oauthModel = new OAuth(['platform' => $platform]);
+        $oauthModel = new Oauth(['platform' => $platform]);
 
         switch ($platform) {
-            case OAuth::PLATFORM_OFFICIAL:
+            case Oauth::PLATFORM_OFFICIAL:
                 return redirect($this->getOfficialApp()->oauth->redirect(\request()->get('redirect_url')));
             default:
                 return $this->fail(sprintf("申请授权失败 platform: %s", $oauthModel->platform_desc));
@@ -52,10 +52,10 @@ class OAuthController extends BaseController
             'code' => ['required', 'string'],
         ]);
 
-        $oauthModel = new OAuth(['platform' => $platform]);
+        $oauthModel = new Oauth(['platform' => $platform]);
 
         switch ($platform) {
-            case OAuth::PLATFORM_OFFICIAL:
+            case Oauth::PLATFORM_OFFICIAL:
                 try {
                     $oauthInfo = $this->getOfficialApp()->oauth->userFromCode(\request()->get('code'));
 
@@ -91,7 +91,7 @@ class OAuthController extends BaseController
             \request()->get('code')
         );
 
-        $oauth = OAuth::query()->find(\request()->get('oauth_id'));
+        $oauth = Oauth::query()->find(\request()->get('oauth_id'));
 
         /** @var \App\Models\User $user */
         $user = $userRepository->findByMobile($mobile = \request()->get('mobile'));

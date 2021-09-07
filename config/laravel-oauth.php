@@ -5,7 +5,7 @@ return [
 
     'user_foreign_key' => 'user_id',
 
-    'oauth_model' => \ZhenMu\LaravelOauth\Models\OAuth::class,
+    'oauth_model' => \ZhenMu\LaravelOauth\Models\Oauth::class,
 
     'user_model' => \App\Models\User::class,
 

@@ -4,7 +4,7 @@ namespace ZhenMu\LaravelOauth\Http\Resources;
 
 use App\Models\User;
 use ZhenMu\LaravelInitTemplate\Http\Resources\BaseResource;
-use ZhenMu\LaravelOauth\Models\OAuth;
+use ZhenMu\LaravelOauth\Models\Oauth;
 
 class OAuthResource extends BaseResource
 {
@@ -16,7 +16,7 @@ class OAuthResource extends BaseResource
      */
     public function toArray($request)
     {
-        /** @var OAuth $oauth */
+        /** @var Oauth $oauth */
         /** @var User $user */
         list($oauth, $user, $access_token) = array_values($this->resource);
 

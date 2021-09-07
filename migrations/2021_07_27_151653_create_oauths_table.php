@@ -16,8 +16,8 @@ class CreateOauthsTable extends Migration
     public function up()
     {
         Schema::create('oauths', function (Blueprint $table) {
-            /** @var \ZhenMu\LaravelOauth\Models\OAuth $model */
-            $model = config('laravel-oauth.oauth_model', \ZhenMu\LaravelOauth\Models\OAuth::class);
+            /** @var \ZhenMu\LaravelOauth\Models\Oauth $model */
+            $model = config('laravel-oauth.oauth_model', \ZhenMu\LaravelOauth\Models\Oauth::class);
 
             $table->id();
             $table->unsignedBigInteger(config('laravel-oauth.user_foreign_key', 'user_id'))->nullable()->comment('用户 id：users.id');

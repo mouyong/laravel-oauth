@@ -6,7 +6,7 @@ class OauthRepository
 {
     public function updateOrCreate(\ZhenMu\LaravelOauth\Contracts\OauthContract $oauth)
     {
-        /** @var \ZhenMu\LaravelOauth\Models\OAuth $model */
+        /** @var \ZhenMu\LaravelOauth\Models\Oauth $model */
         $model = config('laravel-oauth.oauth_model');
 
         return $model::query()
