@@ -41,7 +41,7 @@ class Oauth extends BaseModel
 
     public function user()
     {
-        return $this->belongsTo(config('laravel-oauth.user_model', \App\Models\User::class));
+        return $this->belongsTo(config('laravel-init-template.user_model', \App\Models\User::class));
     }
 
     public static function translateGender(int $gender)

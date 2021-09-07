@@ -20,21 +20,21 @@ class OAuthResource extends BaseResource
         /** @var User $user */
         list($oauth, $user, $access_token) = array_values($this->resource);
 
-        $mobile = optional($user)->mobile;
+        $mobile = $user->profile->mobile ?? null;
 
         return [
             'oauth' => [
                 'id' => optional($oauth)->id,
                 'avatar' => optional($oauth)->avatar,
                 'nickname' => optional($oauth)->nickname,
-                'is_need_bind_user' => !optional($oauth)->user_id,
+                'is_need_bind_user' => !($oauth->user_id ?? null),
             ],
             'user' => [
                 'id' => optional($user)->id,
                 'avatar' => optional($user)->avatar,
                 'name' => optional($user)->name,
                 'mobile' => $mobile,
-                'is_need_bind_id_card' => !!optional($user)->id_card,
+                'is_need_bind_id_card' => !!($user->profile->id_card ?? null),
             ],
             'access_token' => $access_token,
         ];

@@ -1,6 +1,6 @@
 <?php
 
-namespace App\Listeners;
+namespace ZhenMu\LaravelOauth\Listeners;
 
 use Illuminate\Contracts\Queue\ShouldQueue;
 use Illuminate\Queue\InteractsWithQueue;

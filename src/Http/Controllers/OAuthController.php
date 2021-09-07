@@ -112,12 +112,16 @@ class OAuthController extends BaseController
             throw new \RuntimeException('未授权第三方平台信息');
         }
 
+        if (is_null($user)) {
+            throw new \LogicException('请完成创建用户的业务逻辑');
+        }
+
         // h5 用户登录
         if (empty($oauth) && $user) {
             return OAuthResource::make([
                 'oauth' => $oauth,
                 'user' => $user,
-                'access_token' => $user->jwt_token,
+                'access_token' => $user->jwt_token ?? null
             ]);
         }
 
@@ -125,7 +129,7 @@ class OAuthController extends BaseController
         return OAuthResource::make([
             'oauth' => $oauth,
             'user' => $user,
-            'access_token' => $user->jwt_token
+            'access_token' => $user->jwt_token ?? null
         ]);
     }
 }
