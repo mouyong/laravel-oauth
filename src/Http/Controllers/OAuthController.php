@@ -6,6 +6,7 @@ use Overtrue\Socialite\Exceptions\AuthorizeFailedException;
 use ZhenMu\LaravelInitTemplate\Http\Controllers\BaseController;
 use ZhenMu\LaravelInitTemplate\Repositories\UserRepository;
 use ZhenMu\LaravelInitTemplate\Services\Verify;
+use ZhenMu\LaravelOauth\Entities\WechatMiniProgramOauth;
 use ZhenMu\LaravelOauth\Entities\WechatOauth;
 use ZhenMu\LaravelOauth\Events\OAuthUserRegisterEvent;
 use ZhenMu\LaravelOauth\Http\Resources\OauthProfileResource;
@@ -32,6 +33,10 @@ class OAuthController extends BaseController
 
     protected function getMiniprogramApp()
     {
+        if (is_null(config('wechat.mini_program.default'))) {
+            throw new \LogicException('请补充小程序配置信息');
+        }
+
         /** @var \EasyWeChat\MiniProgram\Application $app */
         $app = \EasyWeChat\Factory::miniProgram(array_merge(config('wechat.defaults'), config('wechat.mini_program.default')));
 
@@ -75,10 +80,15 @@ class OAuthController extends BaseController
                 break;
             case Oauth::PLATFORM_MINI_PROGRAM:
                 try {
+                    // session_key, openid
                     $oauthInfo = $this->getMiniprogramApp()->auth->session(\request()->get('code'));
-//                    return $this->success($oauthInfo);
-                    \info('111', [$oauthInfo]);
-                    return ;
+
+                    $decryptData = $this->getMiniprogramApp()->encryptor->decryptData($oauthInfo['session_key'], \request()->get('iv'), \request()->get('encryptedData'));
+
+                    $oauthInfoData = $oauthInfo + $decryptData;
+
+                    /** @var \ZhenMu\LaravelOauth\Contracts\OauthContract $oauth */
+                    $oauth = new WechatMiniProgramOauth($this->getMiniprogramApp()->getConfig()['app_id'], $oauthInfoData);
                 } catch (\Throwable $e) {
                     return $this->fail("{$oauthModel->platform_desc} 授权失败，请稍后重试。原因：{$e->body['errmsg']}");
                 }
