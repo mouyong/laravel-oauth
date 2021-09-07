@@ -77,7 +77,7 @@ class OAuthController extends BaseController
     public function bindUserInfo(Verify $verify, UserRepository $userRepository)
     {
         \request()->validate([
-            'code' => ['required',],
+            'sms_code' => ['required',],
             'mobile' => ['required', 'regex:/^1(3|4|5|6|7|8|9)(\d){9}$/'],
             'mobile_code' => ['nullable', 'string',],
             'type' => ['nullable', 'string',],
@@ -88,7 +88,7 @@ class OAuthController extends BaseController
         $verify->validate(
             \request()->get('type', 'user'),
             \request()->get('mobile_code').\request()->get('mobile'),
-            \request()->get('code')
+            \request()->get('sms_code')
         );
 
         $oauth = Oauth::query()->find(\request()->get('oauth_id'));
