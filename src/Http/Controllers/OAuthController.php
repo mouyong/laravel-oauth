@@ -99,6 +99,16 @@ class OAuthController extends BaseController
 
         $oauthModel = $this->repository->updateOrCreate($oauth);
 
+        // 已有绑定的用户信息，直接登录
+        if ($oauthModel->user_id) {
+            return OAuthResource::make([
+                'oauth' => $oauthModel,
+                'user' => $oauthModel->user,
+                'access_token' => $oauthModel->user->jwt_token ?? null
+            ]);
+        }
+
+        // 返回授权信息，进行下一步绑定
         return OauthProfileResource::make($oauthModel);
     }
 
