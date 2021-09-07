@@ -34,7 +34,7 @@ class OAuthResource extends BaseResource
                 'avatar' => optional($user)->avatar,
                 'name' => optional($user)->name,
                 'mobile' => $mobile,
-                'is_need_bind_id_card' => !!($user->profile->id_card ?? null),
+                'is_need_bind_id_card' => !($user->profile->id_card ?? null),
             ],
             'access_token' => $access_token,
         ];

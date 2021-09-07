@@ -25,7 +25,15 @@ class OAuthController extends BaseController
     protected function getOfficialApp()
     {
         /** @var \EasyWeChat\OfficialAccount\Application $app */
-        $app = \EasyWeChat::officialAccount();
+        $app = \EasyWeChat\Factory::officialAccount(array_merge(config('wechat.defaults'), config('wechat.official_account.default')));
+
+        return $app;
+    }
+
+    protected function getMiniprogramApp()
+    {
+        /** @var \EasyWeChat\MiniProgram\Application $app */
+        $app = \EasyWeChat\Factory::miniProgram(array_merge(config('wechat.defaults'), config('wechat.mini_program.default')));
 
         return $app;
     }
@@ -62,6 +70,16 @@ class OAuthController extends BaseController
                     /** @var \ZhenMu\LaravelOauth\Contracts\OauthContract $oauth */
                     $oauth = new WechatOauth($this->getOfficialApp()->getConfig()['app_id'], $oauthInfo->getRaw());
                 } catch (AuthorizeFailedException $e) {
+                    return $this->fail("{$oauthModel->platform_desc} 授权失败，请稍后重试。原因：{$e->body['errmsg']}");
+                }
+                break;
+            case Oauth::PLATFORM_MINI_PROGRAM:
+                try {
+                    $oauthInfo = $this->getMiniprogramApp()->auth->session(\request()->get('code'));
+//                    return $this->success($oauthInfo);
+                    \info('111', [$oauthInfo]);
+                    return ;
+                } catch (\Throwable $e) {
                     return $this->fail("{$oauthModel->platform_desc} 授权失败，请稍后重试。原因：{$e->body['errmsg']}");
                 }
                 break;
@@ -131,5 +149,10 @@ class OAuthController extends BaseController
             'user' => $user,
             'access_token' => $user->jwt_token ?? null
         ]);
+    }
+
+    public function updateMiniprogramInfo(int $platform)
+    {
+        \info('aaa', \request()->all());
     }
 }
