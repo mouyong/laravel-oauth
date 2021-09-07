@@ -87,8 +87,9 @@ class OAuthController extends BaseController
 
         $verify->validate(
             \request()->get('type', 'user'),
-            \request()->get('mobile_code').\request()->get('mobile'),
-            \request()->get('sms_code')
+            \request()->get('mobile'),
+            \request()->get('sms_code'),
+            \request()->get('mobile_code')
         );
 
         $oauth = Oauth::query()->find(\request()->get('oauth_id'));
