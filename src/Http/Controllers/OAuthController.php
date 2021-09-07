@@ -42,7 +42,7 @@ class OAuthController extends BaseController
             case OAuth::PLATFORM_OFFICIAL:
                 return redirect($this->getOfficialApp()->oauth->redirect(\request()->get('redirect_url')));
             default:
-                return $this->fail($oauthModel->platform_desc);
+                return $this->fail(sprintf("申请授权失败 platform: %s", $oauthModel->platform_desc));
         }
     }
 
@@ -66,7 +66,7 @@ class OAuthController extends BaseController
                 }
                 break;
             default:
-                return $this->fail($oauthModel->platform_desc);
+                return $this->fail(sprintf("更新授权信息失败 platform: %s", $oauthModel->platform_desc));
         }
 
         $oauthModel = $this->repository->updateOrCreate($oauth);
