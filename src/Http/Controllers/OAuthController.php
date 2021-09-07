@@ -163,9 +163,4 @@ class OAuthController extends BaseController
             'access_token' => $user->jwt_token ?? null
         ]);
     }
-
-    public function updateMiniprogramInfo(int $platform)
-    {
-        \info('aaa', \request()->all());
-    }
 }

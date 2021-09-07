@@ -6,6 +6,5 @@ use Illuminate\Support\Facades\Route;
 Route::middleware(config('laravel-oauth.route.middleware', []))->prefix(config('laravel-oauth.route.prefix', 'api'))->group(function () {
     Route::any('oauth/{platform}/update-info', [Controller\OAuthController::class, 'updateInfo']);
     Route::post('oauth/{platform}/bind-user-info', [Controller\OAuthController::class, 'bindUserInfo']);
-    Route::post('oauth/{platform}/update-miniprogram-info', [Controller\OAuthController::class, 'updateMiniprogramInfo']);
     Route::get('oauth/{platform}', [Controller\OAuthController::class, 'redirect']);
 });
