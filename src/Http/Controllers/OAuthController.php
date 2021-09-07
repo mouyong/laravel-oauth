@@ -133,6 +133,9 @@ class OAuthController extends BaseController
                 $oauth->refresh();
                 $user = $oauth->user;
             }
+        } else {
+            $oauth->user_id = $user->id;
+            $oauth->save();
         }
 
         // 无授权信息，无用户信息
