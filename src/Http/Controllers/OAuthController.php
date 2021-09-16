@@ -135,6 +135,10 @@ class OAuthController extends BaseController
         /** @var \App\Models\User $user */
         $user = $userRepository->findByMobile($mobile = \request()->get('mobile'));
 
+        if (is_null($oauth)) {
+            throw new \Exception(sprintf('未找到授权信息 %s', \request('oauth_id')));
+        }
+
         // 创建新用户
         if (empty($user)) {
             event(new OAuthUserRegisterEvent(\request()->all(), $oauth));
