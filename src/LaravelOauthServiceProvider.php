@@ -17,6 +17,10 @@ class LaravelOauthServiceProvider extends ServiceProvider
             __DIR__.'/../config/laravel-oauth.php',
             'laravel-oauth'
         );
+        $this->mergeConfigFrom(
+            __DIR__.'/../config/wechat.php',
+            'wechat'
+        );
     }
 
     /**
@@ -35,6 +39,7 @@ class LaravelOauthServiceProvider extends ServiceProvider
 
         $this->publishes([
             __DIR__.'/../config/laravel-oauth.php' => \config_path('laravel-oauth.php'),
+            __DIR__.'/../config/wechat.php' => \config_path('wechat.php'),
         ], 'config');
 
         $this->publishes([
