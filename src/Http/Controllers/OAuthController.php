@@ -56,18 +56,31 @@ class OAuthController extends BaseController
 
         $oauthModel = new Oauth(['platform' => $platform]);
 
+        $redirectUrl = \request()->get('redirect_url');
+
+        $callbackUrl = \route('oauth.update-info', ['platform' => $platform]);
+
+        $oauthUrl = $callbackUrl;
+        if ($redirectUrl) {
+            $oauthUrl = sprintf('%s?redirect_url=%s', $callbackUrl, urlencode($redirectUrl));
+        }
+
         switch ($platform) {
             case Oauth::PLATFORM_OFFICIAL:
-                return redirect($this->getOfficialApp()->getOAuth()->redirect(\request()->get('redirect_url')));
+                $url = $this->getOfficialApp()->getOAuth()->redirect($oauthUrl);
+                break;
             default:
                 return $this->fail(sprintf("申请授权失败 platform: %s", $oauthModel->platform_desc));
         }
+
+        return redirect($url);
     }
 
     public function updateInfo(int $platform)
     {
         \request()->validate([
             'code' => ['required', 'string'],
+            'redirect_url' => ['nullable', 'string'],
         ]);
 
         $oauthModel = new Oauth(['platform' => $platform]);
@@ -117,6 +130,27 @@ class OAuthController extends BaseController
         }
 
         $oauthModel = $this->repository->updateOrCreate($oauth);
+
+
+        // webview 授权
+        if (in_array($oauthModel->platform, [Oauth::PLATFORM_OFFICIAL])) {
+            // 解析前端 url
+            $redirectUrl = \request()->get('redirect_url', \request()->root());
+            $pathInfo = parse_url($redirectUrl);
+            $query = [];
+            if ($pathInfo['query'] ?? null) {
+                parse_str($pathInfo['query'], $query);
+            }
+
+            // 拼接前端跳转参数
+            $query['oauth_id'] = $oauthModel->getKey();
+            $query['user_id'] = $oauthModel->user_id;
+            $query['access_token'] = $oauthModel->user->jwt_token ?? null;
+
+            $url = sprintf('%s://%s?%s', $pathInfo['scheme'], $pathInfo['host'], http_build_query($query));
+
+            return redirect($url);
+        }
 
         // 已有绑定的用户信息，直接登录
         if ($oauthModel->user_id) {
