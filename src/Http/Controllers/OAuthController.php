@@ -147,7 +147,17 @@ class OAuthController extends BaseController
             $query['user_id'] = $oauthModel->user_id;
             $query['access_token'] = $oauthModel->user->jwt_token ?? null;
 
-            $url = sprintf('%s://%s?%s', $pathInfo['scheme'], $pathInfo['host'], http_build_query($query));
+            switch ($pathInfo['scheme']) {
+                case 'https':
+                    $port = $pathInfo['port'] ?? 443;
+                    break;
+                case 'http':
+                default:
+                    $port = $pathInfo['port'] ?? 80;
+                    break;
+            }
+
+            $url = sprintf('%s://%s:%s?%s', $pathInfo['scheme'], $pathInfo['host'], $port, http_build_query($query));
 
             return redirect($url);
         }
